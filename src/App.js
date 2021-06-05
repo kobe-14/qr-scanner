@@ -1,24 +1,38 @@
+import {useState} from 'react'
 import logo from './logo.svg';
 import './App.css';
+import QrReader from 'react-qr-scanner'
+
+const previewStyle = {
+  height: 240,
+  width: 320,
+}
 
 function App() {
+  const [result, setResult] = useState('')
+
+  const handleScan = (data) => {
+    if(data){
+      setResult(data?.text)
+    }
+  }
+
+  const handleError = (err) => {
+    console.log("Error While Scanning Code", err)
+  }
+
   return (
+    <>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <QrReader
+          delay={100}
+          style={previewStyle}
+          onError={handleError}
+          onScan={handleScan}
+          />
     </div>
+    <div>{result}</div>
+    </>
   );
 }
 
